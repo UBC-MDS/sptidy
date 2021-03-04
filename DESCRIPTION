@@ -2,11 +2,15 @@ Package: sptidy
 Title: What the Package Does (One Line, Title Case)
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "Jacob",
+    c(person(given = "Jacob",
            family = "McFarlane",
            role = c("aut", "cre"),
+           email = "jacob@jakenow.net"),
+    person(given = "Asma",
+           family = "Al-Odaini",
+           role = c("aut"),
            email = "jacob@jakenow.net",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = c(ORCID = "YOUR-ORCID-ID")))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
