@@ -18,9 +18,9 @@ tasks. This package is a simplified reimplementation of the existing
 tidy functions returns a dataframe that summarizes important model
 information, while the augment function expands the original dataframe
 to include additional model specific information by observation. This
-package is meant to complement Sktidy [Sktidy
-repo](https://github.com/UBC-MDS/sktidy), a Python package that was
-created to tidy up the sci-learn package.
+package is meant to complement \[Sktidy\]
+(<a href="https://github.com/UBC-MDS/sktidy" class="uri">https://github.com/UBC-MDS/sktidy</a>),
+a Python package that was created to tidy up the scikit-learn package.
 
 ## Features
 

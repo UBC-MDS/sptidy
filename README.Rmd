@@ -22,7 +22,7 @@ An R package that produces a tidy output for tidymodels model evaluation!
 
 ## Introduction
 
-Sptidy implements a `tidy` and `augment` function for Tidymodel’s linear regression and kmeans clustering to ease model selection and assessment tasks. This package is a simplified reimplementation of the existing `tidy` and `augment` functions in the Broom package. Sptidy’s family of tidy functions returns a dataframe that summarizes important model information, while the augment function expands the original dataframe to include additional model specific information by observation. This package is meant to complement Sktidy [Sktidy repo](https://github.com/UBC-MDS/sktidy), a Python package that was created to tidy up the sci-learn package.  
+Sptidy implements a `tidy` and `augment` function for Tidymodel’s linear regression and kmeans clustering to ease model selection and assessment tasks. This package is a simplified reimplementation of the existing `tidy` and `augment` functions in the Broom package. Sptidy’s family of tidy functions returns a dataframe that summarizes important model information, while the augment function expands the original dataframe to include additional model specific information by observation. This package is meant to complement [Sktidy] (https://github.com/UBC-MDS/sktidy), a Python package that was created to tidy up the scikit-learn package.  
 
 ## Features
 
