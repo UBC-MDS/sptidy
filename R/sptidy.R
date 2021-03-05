@@ -58,11 +58,22 @@ tidy_kmeans <- function() {
 augment_lr <- function() {
 }
 
-#' Title
+#' Cluster Assignments of the Original Data Set
 #'
-#' @return
+#' @param model A `kmeans` object created by [stats::kmeans()].
+#' @param X data.frame of the original data set.
+#' @return data.frame of the original data and their cluster assignment.
 #' @export
 #'
 #' @examples
-augment_kmeans <- function() {
+#' library(tidyverse)
+#' library(tidymodels)
+#' library(broom)
+#' library(stats)
+#' data(iris)
+#' data <- iris %>% select(-Species)
+#' kclust <- kmeans(data, centers = 3)
+#' augment_kmeans(kclust, data)
+augment_kmeans <- function(kclust, data) {
+
 }
