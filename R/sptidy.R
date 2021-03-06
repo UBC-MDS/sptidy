@@ -20,16 +20,29 @@
 #' set_engine("lm") %>%
 #' fit(Employed~., data = longley)
 #' tidy_lr(my_lr,X)
-tidy_lr <- function() {
+tidy_lr <- function(model, X) {
 }
 
-#' Title
+#' Tidy Output for KMeans Clustering
 #'
-#' @return
+#' Creates a tidy dataframe containing information at the cluster level for a
+#' kmeans clustering algorithm
+#'
+#' @param model A `kmeans` object created by [stats::kmeans()].
+#' @param X data.frame of the original data set.
+#'@return data.frame of infomration associated with each cluster
 #' @export
 #'
 #' @examples
-tidy_kmeans <- function() {
+#' library(tidyverse)
+#' library(tidymodels)
+#' library(stats)
+#' data(iris)
+#' data <- iris %>% select(-Species)
+#' kclust <- kmeans(data, centers = 3)
+#' tidy_kmeans(kclust, data)
+tidy_kmeans <- function(X, Model) {
+
 }
 
 #' Title
@@ -57,6 +70,6 @@ augment_lr <- function() {
 #' data <- iris %>% select(-Species)
 #' kclust <- kmeans(data, centers = 3)
 #' augment_kmeans(kclust, data)
-augment_kmeans <- function(kclust, data) {
+augment_kmeans <- function(Model, X) {
 
 }
