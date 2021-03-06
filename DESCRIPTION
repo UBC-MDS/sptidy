@@ -8,9 +8,14 @@ Authors@R:
            email = "jacob@jakenow.net"),
     person(given = "Asma",
            family = "Al-Odaini",
-           role = c("aut"),
-           email = "jacob@jakenow.net",
-           comment = c(ORCID = "YOUR-ORCID-ID")))
+           role = c("aut")),
+    person(given = "Peter",
+           family = "Yang",
+           role = c("aut")),
+    person(given = "Heidi",
+           family = "Ye",
+           role = c("aut"))
+           )
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8

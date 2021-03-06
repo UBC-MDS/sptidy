@@ -4,10 +4,11 @@
 # sptidy
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 An R package that produces a tidy output for tidymodels model
-evaluation!
+evaluation\!
 
 ## Introduction
 
@@ -26,16 +27,16 @@ created to tidy up the scikit-learn package.
 
 The functions that this package currently support include:
 
--   `tidy_kmeans()`: Returns inertia, cluster location, and number of
+  - `tidy_kmeans()`: Returns inertia, cluster location, and number of
     associated points at the level of clusters in a tidy format.
 
--   `tidy_lr()`: Returns coefficients and corresponding feature names in
+  - `tidy_lr()`: Returns coefficients and corresponding feature names in
     a tidy format.
 
--   `augment_lr()` : Returns predictions and residuals for each point in
+  - `augment_lr()` : Returns predictions and residuals for each point in
     the training data set in a tidy format.
 
--   `augment_kmeans()` : Returns assigned cluster and distance from
+  - `augment_kmeans()` : Returns assigned cluster and distance from
     cluster center for the data the kmeans algorithm was fitted with in
     a tidy format.
 
