@@ -38,7 +38,7 @@ tidy_kmeans <- function() {
 #'
 #' @params model _lm
 #' @params X data.frame
-#' @params y data.frame
+#' 
 #'
 #' @return output data.frame
 #' @export
