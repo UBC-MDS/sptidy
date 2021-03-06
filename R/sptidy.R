@@ -54,7 +54,7 @@ tidy_kmeans <- function() {
 #' set_engine("lm") %>%
 #' fit(Employed~., data = longley)
 #' # Return augmented dataframe
-#' augment_lr(my_lr,X,y)
+#' augment_lr(my_lr,longley)
 augment_lr <- function() {
 }
 
