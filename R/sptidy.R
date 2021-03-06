@@ -45,12 +45,29 @@ tidy_kmeans <- function(X, Model) {
 
 }
 
-#' Title
+#' Augmented Output for Tidymodel's Linear Regression
 #'
-#' @return
+#' Adds two columns to the original data of the scikit learn's linear regression model. This includes predictions and residuals.
+#'
+#' @params model _lm
+#' @params X data.frame
+#' 
+#'
+#' @return output data.frame
 #' @export
 #'
 #' @examples
+#' # Import libraries
+#' library(tidyverse)
+#' library(tidymodels)
+#' # Load data
+#' data("longley")
+#' # Fit linear regression
+#' my_lr <- linear_reg() %>%
+#' set_engine("lm") %>%
+#' fit(Employed~., data = longley)
+#' # Return augmented dataframe
+#' augment_lr(my_lr,longley)
 augment_lr <- function() {
 }
 
