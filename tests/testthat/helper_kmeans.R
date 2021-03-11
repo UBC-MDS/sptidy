@@ -1,6 +1,6 @@
 # Creating test data for kmeans functions
 helper_kmeans_data <- function(){
-  kmeans_test_tib <- tibble('x' = c(1,1,1,1,3,3,3,3),
+  kmeans_test_tib <- tibble::tibble('x' = c(1,1,1,1,3,3,3,3),
                             'y' = c(1,3,7,9,1,3,7,9))
   return(kmeans_test_tib)
 }

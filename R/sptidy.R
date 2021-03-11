@@ -30,7 +30,7 @@ tidy_lr <- function(model, X) {
 #'
 #' @param model A `kmeans` object created by [stats::kmeans()].
 #' @param X data.frame of the original data set.
-#'@return data.frame of infomration associated with each cluster
+#'@return tibble of infomration associated with each cluster
 #' @export
 #'
 #' @examples
@@ -43,6 +43,30 @@ tidy_lr <- function(model, X) {
 #' tidy_kmeans(kclust, data)
 tidy_kmeans <- function(X, Model) {
 
+  # Getting the centroid locations as a df
+  centers <- list(Model$centers)
+  centers <- as.data.frame(centers[[1]])
+
+  # Getting each unique cluster label
+  cluster_labels <- tibble::tibble(cluster_number = unique(Model$cluster))
+  cluster_labels <- dplyr::arrange(cluster_labels, (cluster_number))
+
+  # Getting list of centroid coords
+  cluster_center <- c()
+  for (cluster in cluster_labels) {
+    cluster_center[cluster] = centers[cluster]
+  }
+
+  # Getting counts for each label center
+  tester <- tibble::tibble('label' = Model$cluster)
+  n_points <- dplyr::summarise(dplyr::group_by(tester, label), n_points = dplyr::n())
+  n_points <- dplyr::select(n_points,n_points)
+
+  # Putting everything together
+  tidy_output <- tibble::tibble(cluster_labels,
+                      cluster_center,
+                      n_points)
+  return(tidy_output)
 }
 
 #' Augmented Output for Tidymodel's Linear Regression
@@ -51,7 +75,7 @@ tidy_kmeans <- function(X, Model) {
 #'
 #' @params model _lm
 #' @params X data.frame
-#' 
+#'
 #'
 #' @return output data.frame
 #' @export
