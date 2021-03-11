@@ -41,7 +41,7 @@ tidy_lr <- function(model, X) {
 #' data <- iris %>% select(-Species)
 #' kclust <- kmeans(data, centers = 3)
 #' tidy_kmeans(kclust, data)
-tidy_kmeans <- function(X, Model) {
+tidy_kmeans <- function(Model, X) {
 
   # Getting the centroid locations as a df
   centers <- list(Model$centers)
