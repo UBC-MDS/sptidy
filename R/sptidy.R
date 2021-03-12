@@ -30,7 +30,7 @@ tidy_lr <- function(model, X) {
 #'
 #' @param model A `kmeans` object created by [stats::kmeans()].
 #' @param X data.frame of the original data set.
-#'@return tibble of infomration associated with each cluster
+#' @return tibble of infomration associated with each cluster
 #' @export
 #'
 #' @examples
@@ -42,6 +42,10 @@ tidy_lr <- function(model, X) {
 #' kclust <- kmeans(data, centers = 3)
 #' tidy_kmeans(kclust, data)
 tidy_kmeans <- function(Model, X) {
+
+  if (class(Model) = "kmeans") {
+    stop("Model must be of class 'kmeans'")
+  }
 
   # Getting the centroid locations as a df
   centers <- list(Model$centers)
@@ -60,7 +64,7 @@ tidy_kmeans <- function(Model, X) {
   # Getting counts for each label center
   tester <- tibble::tibble('label' = Model$cluster)
   n_points <- dplyr::summarise(dplyr::group_by(tester, label), n_points = dplyr::n())
-  n_points <- dplyr::select(n_points,n_points)
+  n_points <- dplyr::select(n_points, n_points)
 
   # Putting everything together
   tidy_output <- tibble::tibble(cluster_labels,
