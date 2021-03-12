@@ -101,20 +101,32 @@ augment_lr <- function() {
 
 #' Cluster Assignments of the Original Data Set
 #'
-#' @param model A `kmeans` object created by [stats::kmeans()].
+#' @param Model A `kmeans` object created by [stats::kmeans()].
 #' @param X data.frame of the original data set.
 #' @return data.frame of the original data and their cluster assignment.
 #' @export
 #'
 #' @examples
 #' library(tidyverse)
-#' library(tidymodels)
-#' library(broom)
 #' library(stats)
 #' data(iris)
 #' data <- iris %>% select(-Species)
 #' kclust <- kmeans(data, centers = 3)
 #' augment_kmeans(kclust, data)
 augment_kmeans <- function(Model, X) {
+  if (class(Model) != "kmeans") {
+    stop("Model must be of class 'kmeans'")
+  }
 
+  if (class(X)[1] != "data.frame") {
+    stop("X must be a dataframe")
+  }
+
+  # X must not be empty
+  if (nrow(X) == 0) {
+    stop("X must contain more than one row")
+  }
+
+  X$cluster <- Model$cluster
+  return(X)
 }
