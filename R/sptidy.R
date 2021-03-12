@@ -48,10 +48,11 @@ tidy_kmeans <- function(X, Model) {
 
 #' Augmented Output for Base R's Linear Regression
 #'
-#' Adds two columns to the original data of base R's linear regression model. This includes predictions and residuals.
+#' Adds two columns to the original data of base R's linear regression model. \
+#' This includes predictions and residuals.
 #'
 #' @params model _lm
-#' @params X data.frame
+#' @params x data.frame
 #' @params y data.frame
 #'
 #' @return output data.frame
@@ -62,14 +63,18 @@ tidy_kmeans <- function(X, Model) {
 #' library(tidyverse)
 #' data("longley")
 #' my_lr <- lm(Employed~., data = longley)
+#' X <- longley %>%
+#'  select(-Employed)
+#' y <- longley %>%
+#'  select(Employed)
 #' augment_lr(my_lr,longley)
-augment_lr <- function(my_lr, X, y) {
-  pred <- data.frame(predictions = predict(my_lr, X))
+augment_lr <- function(my_lr, x, y) {
+  pred <- data.frame(predictions = predict(my_lr, x))
 
   resid <- data.frame(y - pred) %>%
     rename(residuals = Employed)
 
-  output <- cbind(X, y, pred, resid)
+  output <- cbind(x, y, pred, resid)
 
   return(output)
 }
