@@ -69,6 +69,21 @@ tidy_kmeans <- function(X, Model) {
 #'  select(Employed)
 #' augment_lr(my_lr,longley)
 augment_lr <- function(my_lr, x, y) {
+  # Must be linear regression model
+  if (class(my_lr)[1] != "lm") {
+    stop("Model must be a linear regression model")
+  }
+
+  # x and y must be dataframes
+  if (class(x)[1] != "data.frame" |  class(y)[1] != "data.frame") {
+    stop("x and y must both be dataframes")
+  }
+
+  # x and y must have more than 0 rows
+  if (length(x)[1] == 0 |  length(y)[1]== 0) {
+    stop("x and y must both contain more than one row")
+  }
+
   pred <- data.frame(predictions = predict(my_lr, x))
 
   resid <- data.frame(y - pred) %>%
