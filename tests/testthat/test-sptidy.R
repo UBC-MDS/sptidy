@@ -8,16 +8,16 @@ test_that("tidy_kmeans works as expected and fails gracefully", {
   # Checking that we fail gracefully when given a different class model
   expect_error(sptidy::tidy_kmeans(stats::lm(x ~ y, helper_kmeans_data())))
   # Checking that we get an error when we don't supply the training data
-  expect_error(sptidy::tidy_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2, tibble::tibble())))
+  expect_error(sptidy::tidy_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2, dplyr::tibble())))
 })
 
 test_that("augment_kmeans expects a KMeans model and a non-empty data dataframe else it fails gracefully", {
   # Checking that we fail gracefully when given a different class model
   expect_error(sptidy::augment_kmeans(stats::lm(x ~ y, as.data.frame(helper_kmeans_data()))))
   # Checking that we get an error when we don't supply the training data (empty dataframe)
-  expect_error(sptidy::augment_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2), as.data.frame(tibble::tibble())))
+  expect_error(sptidy::augment_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2), as.data.frame(dplyr::tibble())))
   # Checking that we get an error when we don't supply the training data in a dataframe
-  expect_error(sptidy::augment_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2), tibble::tibble()))
+  expect_error(sptidy::augment_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2), dplyr::tibble()))
 })
 
 
