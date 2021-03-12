@@ -43,7 +43,7 @@ tidy_lr <- function(model, X) {
 #' tidy_kmeans(kclust, data)
 tidy_kmeans <- function(Model, X) {
 
-  if (class(Model) = "kmeans") {
+  if (class(Model) != "kmeans") {
     stop("Model must be of class 'kmeans'")
   }
 
