@@ -80,14 +80,13 @@ augment_lr <- function(my_lr, x, y) {
   }
 
   # x and y must have more than 0 rows
-  if (length(x)[1] == 0 |  length(y)[1]== 0) {
+  if (nrow(x) == 0 |  nrow(y) == 0) {
     stop("x and y must both contain more than one row")
   }
 
   pred <- data.frame(predictions = predict(my_lr, x))
 
-  resid <- data.frame(y - pred) %>%
-    rename(residuals = Employed)
+  resid <- data.frame(residuals = y$y - pred$pred)
 
   output <- cbind(x, y, pred, resid)
 
