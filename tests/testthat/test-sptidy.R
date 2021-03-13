@@ -1,16 +1,16 @@
-# Create test x data for linear regresion testing 
+# Create test x data for linear regresion testing
 helper_lr_x <- function() {
   x <- data.frame(x = c(1,5,10))
   return(x)
 }
 
-# Create test y data for linear regresion testing 
+# Create test y data for linear regresion testing
 helper_lr_y <- function() {
   y <- data.frame(y = c(1,5,10))
   return(y)
 }
 
-# Create test model for linear regresion testing 
+# Create test model for linear regresion testing
 helper_lr_model <- function() {
   model <- lm(y ~ x, data = cbind(helper_lr_x(), helper_lr_y()))
   return(model)
@@ -37,23 +37,26 @@ helper_kmeans_tidy_out <- function(){
   return(kmeans_tidy_result_tib)
 }
 
-# test_that("tidy_lr should throw and error when input model is not a lm() object", {
-#   expect_error(sptidy::tidy_lr("cool"))
-#   expect_error(sptidy::tidy_lr(c(1,2,3)))
-# }
-# )
-# test_that("tidy_lr should output a dataframe with correct number of rows", {
-#   expect_equal(nrow(sptidy::tidy_lr(stats::lm(Employed~., data = helper_lr_data()))), nrow(helper_lr_data()))
-# }
-# )
-# test_that("tidy_lr should output a dataframe with correct number of columns", {
-#   expect_equal(nrow(sptidy::tidy_lr(stats::lm(Employed~., data = helper_lr_data()))), 4)
-# }
-# )
-# test_that("tidy_lr should output should be very close to tidy() output", {
-#   expect_equal(sptidy::tidy_lr(stats::lm(Employed~., data = helper_lr_data()))[1,1], broom::tidy(lm(Employed~., data = helper_lr_data()))[2,2])
-# }
-# )
+test_that("tidy_lr should throw and error when input model is not a lm() object", {
+  expect_error(sptidy::tidy_lr("cool"))
+  expect_error(sptidy::tidy_lr(c(1,2,3)))
+}
+)
+
+test_that("tidy_lr should output a dataframe with correct number of rows", {
+  expect_equal(nrow(sptidy::tidy_lr(stats::lm(Employed~., data = helper_lr_data()))), ncol(helper_lr_data()))
+}
+)
+
+test_that("tidy_lr should output a dataframe with correct number of columns", {
+  expect_equal(ncol(sptidy::tidy_lr(stats::lm(Employed~., data = helper_lr_data()))), 4)
+}
+)
+
+test_that("tidy_lr should output should be very close to tidy() output", {
+  expect_equal(sptidy::tidy_lr(stats::lm(Employed~., data = helper_lr_data()))[1,1], broom::tidy(lm(Employed~., data = helper_lr_data()))[[1,2]], tolerance = 0.001)
+}
+)
 
 test_that("tidy_kmeans works as expected and fails gracefully", {
   # Fitting a kmeans model on our helper data, comparing it to our hand-calculated output
@@ -78,9 +81,9 @@ test_that("augment_lr returns the correct values", {
   # Predictions and residuals sum to y
   expect_true(sum(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions,augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals) == sum(helper_lr_y()))
   # Check linear regression prediction by hand
-  expect_true(near(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions[1], 1))
+  expect_true(dplyr::near(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions[1], 1))
   # Check linear regression residual by hand
-  expect_true(near(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals[1], 0))
+  expect_true(dplyr::near(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals[1], 0))
 })
 
 test_that("augment_kmeans expects a KMeans model and a non-empty data dataframe else it fails gracefully", {
