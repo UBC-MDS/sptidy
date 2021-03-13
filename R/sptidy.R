@@ -1,26 +1,33 @@
 # test fcn
 
-#' Tidy Output for tidymodels Linear Regression
+#' Tidy Output for Linear Regression
 #'
-#' Create a tidy output for tidymodels linear_reg() object. The output dataframe
-#' would have n+1 rows, where n is number of features and 3 columns describing feature
-#' names, coefficients/intercept and p-values
+#' Create a tidy output for lm() object. The output
+#' would have n+1 rows, where n is number of features and
+#' 4 columns describing coefficient estimates, standard
+#' error, t-statistics and p-values
 #'
-#' @params model _lm
-#' @params X data.frame
+#' @params model lm
 #'
 #' @return output data.frame
 #' @export
 #'
 #' @examples
 #' library(tidyverse)
-#' library(tidymodels)
 #' data("longley")
-#' my_lr <- linear_reg() %>%
-#' set_engine("lm") %>%
-#' fit(Employed~., data = longley)
-#' tidy_lr(my_lr,X)
-tidy_lr <- function(model, X) {
+#' my_lr <- lm(Employed~., data = longley)
+#' tidy_lr(my_lr)
+tidy_lr <- function(model) {
+  if (!(class(model)=='lm')) {
+    stop("Input model should be class of 'lm'")
+  }
+  coef <- model$coefficients
+  std_err <- sqrt(diag(vcov(model)))
+  t_stats <- coef/std_err
+  p_val <- summary(model)$coefficients[,4]
+  output <- data.frame(coef,std_err,t_stats,p_val)
+  output[] <- lapply(output, function(x) if(is.numeric(x)) round(x, 4) else x)
+  output
 }
 
 #' Tidy Output for KMeans Clustering
@@ -96,25 +103,53 @@ tidy_kmeans <- function(Model, X) {
 #' fit(Employed~., data = longley)
 #' # Return augmented dataframe
 #' augment_lr(my_lr,longley)
-augment_lr <- function() {
+augment_lr <- function(my_lr, x, y) {
+  # Must be linear regression model
+  if (class(my_lr)[1] != "lm") {
+    stop("Model must be a linear regression model")
+  }
+  # x and y must be dataframes
+  if (class(x)[1] != "data.frame" |  class(y)[1] != "data.frame") {
+    stop("x and y must both be dataframes")
+  }
+  # x and y must have more than 0 rows
+  if (nrow(x) == 0 |  nrow(y) == 0) {
+    stop("x and y must both contain more than one row")
+  }
+  pred <- data.frame(predictions = predict(my_lr, x))
+  resid <- data.frame(residuals = y$y - pred$pred)
+  output <- cbind(x, y, pred, resid)
+  return(output)
 }
 
 #' Cluster Assignments of the Original Data Set
 #'
-#' @param model A `kmeans` object created by [stats::kmeans()].
+#' @param Model A `kmeans` object created by [stats::kmeans()].
 #' @param X data.frame of the original data set.
 #' @return data.frame of the original data and their cluster assignment.
 #' @export
 #'
 #' @examples
 #' library(tidyverse)
-#' library(tidymodels)
-#' library(broom)
 #' library(stats)
 #' data(iris)
 #' data <- iris %>% select(-Species)
 #' kclust <- kmeans(data, centers = 3)
 #' augment_kmeans(kclust, data)
 augment_kmeans <- function(Model, X) {
+  if (class(Model) != "kmeans") {
+    stop("Model must be of class 'kmeans'")
+  }
 
+  if (class(X)[1] != "data.frame") {
+    stop("X must be a dataframe")
+  }
+
+  # X must not be empty
+  if (nrow(X) == 0) {
+    stop("X must contain more than one row")
+  }
+
+  X$cluster <- Model$cluster
+  return(X)
 }
