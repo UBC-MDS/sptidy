@@ -70,20 +70,21 @@ test_that("tidy_kmeans works as expected and fails gracefully", {
 })
 
 test_that("augment_lr returns the correct dataframe type and shape", {
-  # Number of rows across x, y and output should be the same
-  expect_equal(nrow(helper_lr_x()), nrow(helper_lr_y()), nrow(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())))
+  # Number of rows across y and output should be the same
+  expect_equal(nrow(helper_lr_y()), nrow(sptidy::augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())))
   # Number of output columns should be x + y + 2
-  expect_equal(ncol(helper_lr_x()) + ncol(helper_lr_y()) + 2 , ncol(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())))
+  expect_equal(ncol(helper_lr_x()) + ncol(helper_lr_y()) + 2 , ncol(sptidy::augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())))
   # Return object is a dataframe
-  expect_true(is.data.frame(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())))
+  expect_true(is.data.frame(sptidy::augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())))
 })
+
 test_that("augment_lr returns the correct values", {
   # Predictions and residuals sum to y
-  expect_true(sum(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions,augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals) == sum(helper_lr_y()))
+  expect_true(sum(sptidy::augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions,augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals) == sum(helper_lr_y()))
   # Check linear regression prediction by hand
-  expect_true(dplyr::near(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions[1], 1))
+  expect_true(dplyr::near(sptidy::augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$predictions[1], 1))
   # Check linear regression residual by hand
-  expect_true(dplyr::near(augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals[1], 0))
+  expect_true(dplyr::near(sptidy::augment_lr(helper_lr_model(), helper_lr_x(), helper_lr_y())$residuals[1], 0))
 })
 
 test_that("augment_kmeans expects a KMeans model and a non-empty data dataframe else it fails gracefully", {
@@ -94,7 +95,6 @@ test_that("augment_kmeans expects a KMeans model and a non-empty data dataframe 
   # Checking that we get an error when we don't supply the training data in a dataframe
   expect_error(sptidy::augment_kmeans(stats::kmeans(helper_kmeans_data(), centers = 2), dplyr::tibble()))
 })
-
 
 test_that("augment_kmeans returns the correct dataframe type and shape", {
   # Number of rows across X, and output should be the same
