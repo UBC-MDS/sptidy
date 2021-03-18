@@ -7,16 +7,18 @@
 #' 4 columns describing coefficient estimates, standard
 #' error, t-statistics and p-values
 #'
-#' @params model lm
+#' @param model lm_description
 #'
 #' @return output data.frame
 #' @export
 #'
 #' @examples
-#' library(tidyverse)
+#'
+#'
 #' data("longley")
 #' my_lr <- lm(Employed~., data = longley)
 #' tidy_lr(my_lr)
+#'
 tidy_lr <- function(model) {
   if (!(class(model)=='lm')) {
     stop("Input model should be class of 'lm'")
@@ -35,14 +37,13 @@ tidy_lr <- function(model) {
 #' Creates a tidy dataframe containing information at the cluster level for a
 #' kmeans clustering algorithm
 #'
-#' @param model A `kmeans` object created by [stats::kmeans()].
+#' @param Model A `kmeans` object created by [stats::kmeans()].
 #' @param X data.frame of the original data set.
 #' @return tibble of infomration associated with each cluster
 #' @export
 #'
 #' @examples
-#' library(tidyverse)
-#' library(tidymodels)
+#' library(dplyr)
 #' library(stats)
 #' data(iris)
 #' data <- iris %>% select(-Species)
@@ -84,8 +85,9 @@ tidy_kmeans <- function(Model, X) {
 #'
 #' Adds two columns to the original data of the scikit learn's linear regression model. This includes predictions and residuals.
 #'
-#' @params model _lm
-#' @params X data.frame
+#' @param my_lr the linear model to augment
+#' @param x the data frame containing the explanatory variables
+#' @param y the data frame containing the target variable
 #'
 #'
 #' @return output data.frame
@@ -93,16 +95,10 @@ tidy_kmeans <- function(Model, X) {
 #'
 #' @examples
 #' # Import libraries
-#' library(tidyverse)
-#' library(tidymodels)
+#' library(dplyr)
 #' # Load data
-#' data("longley")
-#' # Fit linear regression
-#' my_lr <- linear_reg() %>%
-#' set_engine("lm") %>%
-#' fit(Employed~., data = longley)
-#' # Return augmented dataframe
-#' augment_lr(my_lr,longley)
+
+
 augment_lr <- function(my_lr, x, y) {
   # Must be linear regression model
   if (class(my_lr)[1] != "lm") {
@@ -116,7 +112,7 @@ augment_lr <- function(my_lr, x, y) {
   if (nrow(x) == 0 |  nrow(y) == 0) {
     stop("x and y must both contain more than one row")
   }
-  pred <- data.frame(predictions = predict(my_lr, x))
+  pred <- data.frame(predictions = stats::predict(my_lr, x))
   resid <- data.frame(residuals = y$y - pred$pred)
   output <- cbind(x, y, pred, resid)
   return(output)
@@ -130,7 +126,7 @@ augment_lr <- function(my_lr, x, y) {
 #' @export
 #'
 #' @examples
-#' library(tidyverse)
+#' library(dplyr)
 #' library(stats)
 #' data(iris)
 #' data <- iris %>% select(-Species)
