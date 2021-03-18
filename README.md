@@ -4,22 +4,21 @@
 # sptidy
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 An R package that produces a tidy output for tidymodels model
-evaluation\!
+evaluation!
 
 ## Introduction
 
-Sptidy implements a `tidy` and `augment` function for Tidymodel’s linear
-regression and kmeans clustering to ease model selection and assessment
-tasks. This package is a simplified reimplementation of the existing
-`tidy` and `augment` functions in the Broom package. Sptidy’s family of
-tidy functions returns a dataframe that summarizes important model
-information, while the augment function expands the original dataframe
-to include additional model specific information by observation. This
-package is meant to complement
+Sptidy implements a `tidy` and `augment` function for base R’s linear
+regression and Tidymodel’s kmeans clustering to ease model selection and
+assessment tasks. This package is a simplified reimplementation of the
+existing `tidy` and `augment` functions in the Broom package. Sptidy’s
+family of tidy functions returns a dataframe that summarizes important
+model information, while the augment function expands the original
+dataframe to include additional model specific information by
+observation. This package is meant to complement
 [Sktidy](https://github.com/UBC-MDS/sktidy), a Python package that was
 created to tidy up the scikit-learn package.
 
@@ -27,16 +26,16 @@ created to tidy up the scikit-learn package.
 
 The functions that this package currently support include:
 
-  - `tidy_kmeans()`: Returns inertia, cluster location, and number of
+-   `tidy_kmeans()`: Returns inertia, cluster location, and number of
     associated points at the level of clusters in a tidy format.
 
-  - `tidy_lr()`: Returns coefficients and corresponding feature names in
+-   `tidy_lr()`: Returns coefficients and corresponding feature names in
     a tidy format.
 
-  - `augment_lr()` : Returns predictions and residuals for each point in
+-   `augment_lr()` : Returns predictions and residuals for each point in
     the training data set in a tidy format.
 
-  - `augment_kmeans()` : Returns assigned cluster and distance from
+-   `augment_kmeans()` : Returns assigned cluster and distance from
     cluster center for the data the kmeans algorithm was fitted with in
     a tidy format.
 
@@ -51,9 +50,8 @@ t.test, and turns them into tidy data frames. The tidy data refers to
 outputting the results in a `data.frame` where each variable has its own
 column, each observation has its own row, and each value has its own
 cell. In `sptidy`, we implement the functions `tidy()` and `augment()`
-for the linear regression model from the `parsnip` package which is
-included in the `tidymodels` package using the function
-[`linear_reg()`](https://www.rdocumentation.org/packages/parsnip/versions/0.0.0.9001/topics/linear_reg)
+for the linear regression model from base R using the function
+[`lm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm)
 and the KMeans model from R `stats` package using the function
 [`kmeans()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/kmeans).
 
