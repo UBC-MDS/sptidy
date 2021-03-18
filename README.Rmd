@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # sptidy
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/UBC-MDS/sptidy/workflows/R-CMD-check/badge.svg)](https://github.com/UBC-MDS/sptidy/actions)
 <!-- badges: end -->
 
 An R package that produces a tidy output for tidymodels model evaluation!
