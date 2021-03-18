@@ -7,9 +7,9 @@
 tidy_kmeans(Model, X)
 }
 \arguments{
-\item{X}{data.frame of the original data set.}
+\item{Model}{A \code{kmeans} object created by \code{\link[stats:kmeans]{stats::kmeans()}}.}
 
-\item{model}{A \code{kmeans} object created by \code{\link[stats:kmeans]{stats::kmeans()}}.}
+\item{X}{data.frame of the original data set.}
 }
 \value{
 tibble of infomration associated with each cluster
@@ -19,8 +19,7 @@ Creates a tidy dataframe containing information at the cluster level for a
 kmeans clustering algorithm
 }
 \examples{
-library(tidyverse)
-library(tidymodels)
+library(dplyr)
 library(stats)
 data(iris)
 data <- iris \%>\% select(-Species)

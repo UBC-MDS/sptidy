@@ -2,24 +2,26 @@
 % Please edit documentation in R/sptidy.R
 \name{tidy_lr}
 \alias{tidy_lr}
-\title{Tidy Output for tidymodels Linear Regression}
+\title{Tidy Output for Linear Regression}
 \usage{
-tidy_lr(model, X)
+tidy_lr(model)
+}
+\arguments{
+\item{model}{lm_description}
 }
 \value{
 output data.frame
 }
 \description{
-Create a tidy output for tidymodels linear_reg() object. The output dataframe
-would have n+1 rows, where n is number of features and 3 columns describing feature
-names, coefficients/intercept and p-values
+Create a tidy output for lm() object. The output
+would have n+1 rows, where n is number of features and
+4 columns describing coefficient estimates, standard
+error, t-statistics and p-values
 }
 \examples{
-library(tidyverse)
-library(tidymodels)
+
 data("longley")
-my_lr <- linear_reg() \%>\%
-set_engine("lm") \%>\%
-fit(Employed~., data = longley)
-tidy_lr(my_lr,X)
+my_lr <- lm(Employed~., data = longley)
+tidy_lr(my_lr)
+
 }

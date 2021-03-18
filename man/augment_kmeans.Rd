@@ -18,7 +18,7 @@ data.frame of the original data and their cluster assignment.
 Cluster Assignments of the Original Data Set
 }
 \examples{
-library(tidyverse)
+library(dplyr)
 library(stats)
 data(iris)
 data <- iris \%>\% select(-Species)
