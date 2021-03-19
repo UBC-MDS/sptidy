@@ -63,7 +63,7 @@ sptidy::augment_lr() augments the data frame with predictions and residuals from
 
 ```{r}
 my_lr <- lm(Employed~., data = longley)
-#sptidy::augment_lr(my_lr,longley[,1:6],longley["Employed"])
+sptidy::augment_lr(my_lr,longley[,1:6],longley["Employed"])
 ```
 
 ### tidy_kmeans(): clean summary output for kmeans()
