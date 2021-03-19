@@ -13,7 +13,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' library(sptidy)
 #'
 #' data("longley")
 #' my_lr <- lm(Employed~., data = longley)
@@ -44,11 +44,13 @@ tidy_lr <- function(model) {
 #'
 #' @examples
 #' library(dplyr)
-#' library(stats)
+#' library(sptidy)
+#'
 #' data(iris)
 #' data <- iris %>% select(-Species)
 #' kclust <- kmeans(data, centers = 3)
 #' tidy_kmeans(kclust, data)
+
 tidy_kmeans <- function(Model, X) {
 
   if (class(Model) != "kmeans") {
@@ -96,7 +98,11 @@ tidy_kmeans <- function(Model, X) {
 #' @examples
 #' # Import libraries
 #' library(dplyr)
-#' # Load data
+#' library(sptidy)
+#' data("longley")
+#' my_lr <- lm(Employed~., data = longley)
+#' augment_lr(my_lr, (longley %>% select(!Employed)),
+#'  as.data.frame(longley$Employed))
 
 
 augment_lr <- function(my_lr, x, y) {
@@ -113,7 +119,7 @@ augment_lr <- function(my_lr, x, y) {
     stop("x and y must both contain more than one row")
   }
   pred <- data.frame(predictions = stats::predict(my_lr, x))
-  resid <- data.frame(residuals = y$y - pred$pred)
+  resid <- data.frame(residuals = my_lr$residuals)
   output <- cbind(x, y, pred, resid)
   return(output)
 }
@@ -127,11 +133,13 @@ augment_lr <- function(my_lr, x, y) {
 #'
 #' @examples
 #' library(dplyr)
-#' library(stats)
+#' library(sptidy)
+#'
 #' data(iris)
 #' data <- iris %>% select(-Species)
 #' kclust <- kmeans(data, centers = 3)
 #' augment_kmeans(kclust, data)
+#
 augment_kmeans <- function(Model, X) {
   if (class(Model) != "kmeans") {
     stop("Model must be of class 'kmeans'")
