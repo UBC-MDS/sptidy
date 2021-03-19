@@ -119,11 +119,7 @@ augment_lr <- function(my_lr, x, y) {
     stop("x and y must both contain more than one row")
   }
   pred <- data.frame(predictions = stats::predict(my_lr, x))
-  print(nrow(pred))
-  print(nrow(y))
   resid <- data.frame(residuals = my_lr$residuals)
-  print(nrow(resid))
-  print(nrow(pred))
   output <- cbind(x, y, pred, resid)
   return(output)
 }
