@@ -4,7 +4,14 @@
 \alias{augment_lr}
 \title{Augmented Output for Tidymodel's Linear Regression}
 \usage{
-augment_lr()
+augment_lr(my_lr, x, y)
+}
+\arguments{
+\item{my_lr}{the linear model to augment}
+
+\item{x}{the data frame containing the explanatory variables}
+
+\item{y}{the data frame containing the target variable}
 }
 \value{
 output data.frame
@@ -14,14 +21,6 @@ Adds two columns to the original data of the scikit learn's linear regression mo
 }
 \examples{
 # Import libraries
-library(tidyverse)
-library(tidymodels)
+library(dplyr)
 # Load data
-data("longley")
-# Fit linear regression
-my_lr <- linear_reg() \%>\%
-set_engine("lm") \%>\%
-fit(Employed~., data = longley)
-# Return augmented dataframe
-augment_lr(my_lr,longley)
 }
