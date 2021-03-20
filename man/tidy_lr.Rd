@@ -19,6 +19,7 @@ would have n+1 rows, where n is number of features and
 error, t-statistics and p-values
 }
 \examples{
+library(sptidy)
 
 data("longley")
 my_lr <- lm(Employed~., data = longley)

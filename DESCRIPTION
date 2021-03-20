@@ -28,7 +28,7 @@ Suggests:
     knitr,
     rmarkdown
 Config/testthat/edition: 3
-URL: https://github.com/UBC-MDS/sptidy
+URL: https://ubc-mds.github.io/sptidy, https://github.com/UBC-MDS/sptidy
 BugReports: https://github.com/UBC-MDS/sptidy/issues
 Imports: 
     tibble,

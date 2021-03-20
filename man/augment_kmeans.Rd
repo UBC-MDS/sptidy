@@ -19,7 +19,8 @@ Cluster Assignments of the Original Data Set
 }
 \examples{
 library(dplyr)
-library(stats)
+library(sptidy)
+
 data(iris)
 data <- iris \%>\% select(-Species)
 kclust <- kmeans(data, centers = 3)
