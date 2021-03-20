@@ -52,9 +52,83 @@ devtools::install_github("UBC-MDS/sptidy")
 
 This is a basic example which shows you how to solve a common problem:
 
-```{r example}
-#library(sptidy)
-## basic example code
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+When working with linear regression and kmeans clustering in R, it's nice to:
+
+* have a one-stop shop summary data frame on model statistics
+* have a data frame with prediction, residual or cluster assignment with respect to each observation
+
+The sptidy package provides tools that make these tasks swift and easy. 
+
+## Overview
+
+This vignette is the package-wide documentation for R package sptidy. This helps those who want to use this package better understand what sptidy does. A full usage demonstration of all functions in this package is included in this vignette. 
+
+## Available functions
+sptidy provides functions for model evaluation and analysis. These functions work with 2 types of models: lm() and kmeans().
+
+- linear regression
+  - `tidy_lr` outputs summary on lm()
+  - `augment_lr` augments a data frame with predictions and residuals
+  
+- kmeans clustering
+  - `tidy_kmeans` outputs summary on kmeans()
+  - `augment_kmeans` augments a data frame with cluster assignments
+
+## Data
+
+First, let us load sptidy and 2 data set: `longley`, `iris` for function usage demonstration. 
+
+```{r setup}
+library(sptidy)
+data(longley)
+data(iris)
+```
+
+## Function Usage Demonstration
+
+### tidy_lr(): clean summary output for lm()
+
+sptidy::tidy_lr() provides a tidy data frame that summarizes a fitted linear regression object lm(). The argument in the function needs to be a fitted lm() object. The output data frame has 4 columns, describing coefficient estimates, standard error, t-statistics and p-values.
+
+```{r}
+my_lr <- lm(Employed~., data = longley)
+sptidy::tidy_lr(my_lr)
+```
+
+### augment_lr(): augment data frame from lm()
+
+sptidy::augment_lr() augments the data frame with predictions and residuals from a fitted linear regression object lm(). The first argument is the fitted lm() object. The second and third argument refer to the feature data frame and target data frame that are fitted to the lm() object. The output data frame has additional 2 columns, describing predictions and residuals with respect to each observation. 
+
+```{r}
+my_lr <- lm(Employed~., data = longley)
+sptidy::augment_lr(my_lr, longley[1:6], as.data.frame(longley$Employed))
+```
+
+### tidy_kmeans(): clean summary output for kmeans()
+
+sptidy::tidy_kmeans() provides a tidy data frame that summarizes a fitted kmeans clustering object kmenas(). The first argument is the fitted kmeans() object. The second argument refers to the data that was fitted to the kmeans() object. The output data frame has 3 columns, describing cluster number, cluster center and number of points within each cluster. 
+
+```{r}
+data <- iris[,1:3]
+kclust <- kmeans(data, centers = 3)
+tidy_kmeans(kclust, data)
+```
+### augment_kmeans(): augment data frame from kmeans()
+
+sptidy::augment_kmeans() augments the data frame with cluster assignment from a fitted kmeans clustering object kmeans(). The first argument is the fitted kmeans() object. The second argument refers to the data that was fitted to the kmeans() object. The output data frame has additional 1 column, describing cluster assignment with respect to each observation. 
+
+```{r}
+data <- iris[,1:3]
+kclust <- kmeans(data, centers = 3)
+augment_kmeans(kclust, data)
 ```
 
 
