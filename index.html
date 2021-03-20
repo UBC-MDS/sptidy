@@ -116,9 +116,286 @@
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>This is a basic example which shows you how to solve a common problem:</p>
+<p>When working with linear regression and kmeans clustering in R, it’s nice to:</p>
+<ul>
+<li>have a one-stop shop summary data frame on model statistics</li>
+<li>have a data frame with prediction, residual or cluster assignment with respect to each observation</li>
+</ul>
+<p>The sptidy package provides tools that make these tasks swift and easy.</p>
+</div>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>This vignette is the package-wide documentation for R package sptidy. This helps those who want to use this package better understand what sptidy does. A full usage demonstration of all functions in this package is included in this vignette.</p>
+</div>
+<div id="available-functions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#available-functions" class="anchor"></a>Available functions</h2>
+<p>sptidy provides functions for model evaluation and analysis. These functions work with 2 types of models: lm() and kmeans().</p>
+<ul>
+<li>linear regression
+<ul>
+<li>
+<code>tidy_lr</code> outputs summary on lm()</li>
+<li>
+<code>augment_lr</code> augments a data frame with predictions and residuals</li>
+</ul>
+</li>
+<li>kmeans clustering
+<ul>
+<li>
+<code>tidy_kmeans</code> outputs summary on kmeans()</li>
+<li>
+<code>augment_kmeans</code> augments a data frame with cluster assignments</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data" class="anchor"></a>Data</h2>
+<p>First, let us load sptidy and 2 data set: <code>longley</code>, <code>iris</code> for function usage demonstration.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#library(sptidy)</span>
-<span class="co">## basic example code</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ubc-mds.github.io/sptidy">sptidy</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">longley</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">iris</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="function-usage-demonstration" class="section level2">
+<h2 class="hasAnchor">
+<a href="#function-usage-demonstration" class="anchor"></a>Function Usage Demonstration</h2>
+<div id="tidy_lr-clean-summary-output-for-lm" class="section level3">
+<h3 class="hasAnchor">
+<a href="#tidy_lr-clean-summary-output-for-lm" class="anchor"></a>tidy_lr(): clean summary output for lm()</h3>
+<p>sptidy::tidy_lr() provides a tidy data frame that summarizes a fitted linear regression object lm(). The argument in the function needs to be a fitted lm() object. The output data frame has 4 columns, describing coefficient estimates, standard error, t-statistics and p-values.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Employed</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">longley</span><span class="op">)</span>
+<span class="fu">sptidy</span><span class="fu">::</span><span class="fu"><a href="reference/tidy_lr.html">tidy_lr</a></span><span class="op">(</span><span class="va">my_lr</span><span class="op">)</span>
+<span class="co">#&gt;                    coef  std_err t_stats  p_val</span>
+<span class="co">#&gt; (Intercept)  -3482.2586 890.4204 -3.9108 0.0036</span>
+<span class="co">#&gt; GNP.deflator     0.0151   0.0849  0.1774 0.8631</span>
+<span class="co">#&gt; GNP             -0.0358   0.0335 -1.0695 0.3127</span>
+<span class="co">#&gt; Unemployed      -0.0202   0.0049 -4.1364 0.0025</span>
+<span class="co">#&gt; Armed.Forces    -0.0103   0.0021 -4.8220 0.0009</span>
+<span class="co">#&gt; Population      -0.0511   0.2261 -0.2261 0.8262</span>
+<span class="co">#&gt; Year             1.8292   0.4555  4.0159 0.0030</span></code></pre></div>
+</div>
+<div id="augment_lr-augment-data-frame-from-lm" class="section level3">
+<h3 class="hasAnchor">
+<a href="#augment_lr-augment-data-frame-from-lm" class="anchor"></a>augment_lr(): augment data frame from lm()</h3>
+<p>sptidy::augment_lr() augments the data frame with predictions and residuals from a fitted linear regression object lm(). The first argument is the fitted lm() object. The second and third argument refer to the feature data frame and target data frame that are fitted to the lm() object. The output data frame has additional 2 columns, describing predictions and residuals with respect to each observation.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_lr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Employed</span><span class="op">~</span><span class="va">.</span>, data <span class="op">=</span> <span class="va">longley</span><span class="op">)</span>
+<span class="fu">sptidy</span><span class="fu">::</span><span class="fu"><a href="reference/augment_lr.html">augment_lr</a></span><span class="op">(</span><span class="va">my_lr</span>, <span class="va">longley</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">longley</span><span class="op">$</span><span class="va">Employed</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;      GNP.deflator     GNP Unemployed Armed.Forces Population Year</span>
+<span class="co">#&gt; 1947         83.0 234.289      235.6        159.0    107.608 1947</span>
+<span class="co">#&gt; 1948         88.5 259.426      232.5        145.6    108.632 1948</span>
+<span class="co">#&gt; 1949         88.2 258.054      368.2        161.6    109.773 1949</span>
+<span class="co">#&gt; 1950         89.5 284.599      335.1        165.0    110.929 1950</span>
+<span class="co">#&gt; 1951         96.2 328.975      209.9        309.9    112.075 1951</span>
+<span class="co">#&gt; 1952         98.1 346.999      193.2        359.4    113.270 1952</span>
+<span class="co">#&gt; 1953         99.0 365.385      187.0        354.7    115.094 1953</span>
+<span class="co">#&gt; 1954        100.0 363.112      357.8        335.0    116.219 1954</span>
+<span class="co">#&gt; 1955        101.2 397.469      290.4        304.8    117.388 1955</span>
+<span class="co">#&gt; 1956        104.6 419.180      282.2        285.7    118.734 1956</span>
+<span class="co">#&gt; 1957        108.4 442.769      293.6        279.8    120.445 1957</span>
+<span class="co">#&gt; 1958        110.8 444.546      468.1        263.7    121.950 1958</span>
+<span class="co">#&gt; 1959        112.6 482.704      381.3        255.2    123.366 1959</span>
+<span class="co">#&gt; 1960        114.2 502.601      393.1        251.4    125.368 1960</span>
+<span class="co">#&gt; 1961        115.7 518.173      480.6        257.2    127.852 1961</span>
+<span class="co">#&gt; 1962        116.9 554.894      400.7        282.7    130.081 1962</span>
+<span class="co">#&gt;      longley$Employed predictions   residuals</span>
+<span class="co">#&gt; 1947           60.323    60.05566  0.26734003</span>
+<span class="co">#&gt; 1948           61.122    61.21601 -0.09401394</span>
+<span class="co">#&gt; 1949           60.171    60.12471  0.04628717</span>
+<span class="co">#&gt; 1950           61.187    61.59711 -0.41011462</span>
+<span class="co">#&gt; 1951           63.221    62.91129  0.30971459</span>
+<span class="co">#&gt; 1952           63.639    63.88831 -0.24931122</span>
+<span class="co">#&gt; 1953           64.989    65.15305 -0.16404896</span>
+<span class="co">#&gt; 1954           63.761    63.77418 -0.01318036</span>
+<span class="co">#&gt; 1955           66.019    66.00470  0.01430477</span>
+<span class="co">#&gt; 1956           67.857    67.40161  0.45539409</span>
+<span class="co">#&gt; 1957           68.169    68.18627 -0.01726893</span>
+<span class="co">#&gt; 1958           66.513    66.55206 -0.03905504</span>
+<span class="co">#&gt; 1959           68.655    68.81055 -0.15554997</span>
+<span class="co">#&gt; 1960           69.564    69.64967 -0.08567131</span>
+<span class="co">#&gt; 1961           69.331    68.98907  0.34193151</span>
+<span class="co">#&gt; 1962           70.551    70.75776 -0.20675783</span></code></pre></div>
+</div>
+<div id="tidy_kmeans-clean-summary-output-for-kmeans" class="section level3">
+<h3 class="hasAnchor">
+<a href="#tidy_kmeans-clean-summary-output-for-kmeans" class="anchor"></a>tidy_kmeans(): clean summary output for kmeans()</h3>
+<p>sptidy::tidy_kmeans() provides a tidy data frame that summarizes a fitted kmeans clustering object kmenas(). The first argument is the fitted kmeans() object. The second argument refers to the data that was fitted to the kmeans() object. The output data frame has 3 columns, describing cluster number, cluster center and number of points within each cluster.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>
+<span class="va">kclust</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">data</span>, centers <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="reference/tidy_kmeans.html">tidy_kmeans</a></span><span class="op">(</span><span class="va">kclust</span>, <span class="va">data</span><span class="op">)</span>
+<span class="co">#&gt; # A tibble: 3 x 3</span>
+<span class="co">#&gt;   cluster_number cluster_center n_points</span>
+<span class="co">#&gt;            &lt;int&gt; &lt;list&gt;            &lt;int&gt;</span>
+<span class="co">#&gt; 1              1 &lt;dbl [3]&gt;            22</span>
+<span class="co">#&gt; 2              2 &lt;dbl [3]&gt;            32</span>
+<span class="co">#&gt; 3              3 &lt;dbl [3]&gt;            96</span></code></pre></div>
+</div>
+<div id="augment_kmeans-augment-data-frame-from-kmeans" class="section level3">
+<h3 class="hasAnchor">
+<a href="#augment_kmeans-augment-data-frame-from-kmeans" class="anchor"></a>augment_kmeans(): augment data frame from kmeans()</h3>
+<p>sptidy::augment_kmeans() augments the data frame with cluster assignment from a fitted kmeans clustering object kmeans(). The first argument is the fitted kmeans() object. The second argument refers to the data that was fitted to the kmeans() object. The output data frame has additional 1 column, describing cluster assignment with respect to each observation.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data</span> <span class="op">&lt;-</span> <span class="va">iris</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>
+<span class="va">kclust</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/kmeans.html">kmeans</a></span><span class="op">(</span><span class="va">data</span>, centers <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="reference/augment_kmeans.html">augment_kmeans</a></span><span class="op">(</span><span class="va">kclust</span>, <span class="va">data</span><span class="op">)</span>
+<span class="co">#&gt;     Sepal.Length Sepal.Width Petal.Length cluster</span>
+<span class="co">#&gt; 1            5.1         3.5          1.4       3</span>
+<span class="co">#&gt; 2            4.9         3.0          1.4       3</span>
+<span class="co">#&gt; 3            4.7         3.2          1.3       3</span>
+<span class="co">#&gt; 4            4.6         3.1          1.5       3</span>
+<span class="co">#&gt; 5            5.0         3.6          1.4       3</span>
+<span class="co">#&gt; 6            5.4         3.9          1.7       3</span>
+<span class="co">#&gt; 7            4.6         3.4          1.4       3</span>
+<span class="co">#&gt; 8            5.0         3.4          1.5       3</span>
+<span class="co">#&gt; 9            4.4         2.9          1.4       3</span>
+<span class="co">#&gt; 10           4.9         3.1          1.5       3</span>
+<span class="co">#&gt; 11           5.4         3.7          1.5       3</span>
+<span class="co">#&gt; 12           4.8         3.4          1.6       3</span>
+<span class="co">#&gt; 13           4.8         3.0          1.4       3</span>
+<span class="co">#&gt; 14           4.3         3.0          1.1       3</span>
+<span class="co">#&gt; 15           5.8         4.0          1.2       3</span>
+<span class="co">#&gt; 16           5.7         4.4          1.5       3</span>
+<span class="co">#&gt; 17           5.4         3.9          1.3       3</span>
+<span class="co">#&gt; 18           5.1         3.5          1.4       3</span>
+<span class="co">#&gt; 19           5.7         3.8          1.7       3</span>
+<span class="co">#&gt; 20           5.1         3.8          1.5       3</span>
+<span class="co">#&gt; 21           5.4         3.4          1.7       3</span>
+<span class="co">#&gt; 22           5.1         3.7          1.5       3</span>
+<span class="co">#&gt; 23           4.6         3.6          1.0       3</span>
+<span class="co">#&gt; 24           5.1         3.3          1.7       3</span>
+<span class="co">#&gt; 25           4.8         3.4          1.9       3</span>
+<span class="co">#&gt; 26           5.0         3.0          1.6       3</span>
+<span class="co">#&gt; 27           5.0         3.4          1.6       3</span>
+<span class="co">#&gt; 28           5.2         3.5          1.5       3</span>
+<span class="co">#&gt; 29           5.2         3.4          1.4       3</span>
+<span class="co">#&gt; 30           4.7         3.2          1.6       3</span>
+<span class="co">#&gt; 31           4.8         3.1          1.6       3</span>
+<span class="co">#&gt; 32           5.4         3.4          1.5       3</span>
+<span class="co">#&gt; 33           5.2         4.1          1.5       3</span>
+<span class="co">#&gt; 34           5.5         4.2          1.4       3</span>
+<span class="co">#&gt; 35           4.9         3.1          1.5       3</span>
+<span class="co">#&gt; 36           5.0         3.2          1.2       3</span>
+<span class="co">#&gt; 37           5.5         3.5          1.3       3</span>
+<span class="co">#&gt; 38           4.9         3.6          1.4       3</span>
+<span class="co">#&gt; 39           4.4         3.0          1.3       3</span>
+<span class="co">#&gt; 40           5.1         3.4          1.5       3</span>
+<span class="co">#&gt; 41           5.0         3.5          1.3       3</span>
+<span class="co">#&gt; 42           4.5         2.3          1.3       3</span>
+<span class="co">#&gt; 43           4.4         3.2          1.3       3</span>
+<span class="co">#&gt; 44           5.0         3.5          1.6       3</span>
+<span class="co">#&gt; 45           5.1         3.8          1.9       3</span>
+<span class="co">#&gt; 46           4.8         3.0          1.4       3</span>
+<span class="co">#&gt; 47           5.1         3.8          1.6       3</span>
+<span class="co">#&gt; 48           4.6         3.2          1.4       3</span>
+<span class="co">#&gt; 49           5.3         3.7          1.5       3</span>
+<span class="co">#&gt; 50           5.0         3.3          1.4       3</span>
+<span class="co">#&gt; 51           7.0         3.2          4.7       1</span>
+<span class="co">#&gt; 52           6.4         3.2          4.5       2</span>
+<span class="co">#&gt; 53           6.9         3.1          4.9       1</span>
+<span class="co">#&gt; 54           5.5         2.3          4.0       2</span>
+<span class="co">#&gt; 55           6.5         2.8          4.6       2</span>
+<span class="co">#&gt; 56           5.7         2.8          4.5       2</span>
+<span class="co">#&gt; 57           6.3         3.3          4.7       2</span>
+<span class="co">#&gt; 58           4.9         2.4          3.3       2</span>
+<span class="co">#&gt; 59           6.6         2.9          4.6       2</span>
+<span class="co">#&gt; 60           5.2         2.7          3.9       2</span>
+<span class="co">#&gt; 61           5.0         2.0          3.5       2</span>
+<span class="co">#&gt; 62           5.9         3.0          4.2       2</span>
+<span class="co">#&gt; 63           6.0         2.2          4.0       2</span>
+<span class="co">#&gt; 64           6.1         2.9          4.7       2</span>
+<span class="co">#&gt; 65           5.6         2.9          3.6       2</span>
+<span class="co">#&gt; 66           6.7         3.1          4.4       2</span>
+<span class="co">#&gt; 67           5.6         3.0          4.5       2</span>
+<span class="co">#&gt; 68           5.8         2.7          4.1       2</span>
+<span class="co">#&gt; 69           6.2         2.2          4.5       2</span>
+<span class="co">#&gt; 70           5.6         2.5          3.9       2</span>
+<span class="co">#&gt; 71           5.9         3.2          4.8       2</span>
+<span class="co">#&gt; 72           6.1         2.8          4.0       2</span>
+<span class="co">#&gt; 73           6.3         2.5          4.9       2</span>
+<span class="co">#&gt; 74           6.1         2.8          4.7       2</span>
+<span class="co">#&gt; 75           6.4         2.9          4.3       2</span>
+<span class="co">#&gt; 76           6.6         3.0          4.4       2</span>
+<span class="co">#&gt; 77           6.8         2.8          4.8       1</span>
+<span class="co">#&gt; 78           6.7         3.0          5.0       1</span>
+<span class="co">#&gt; 79           6.0         2.9          4.5       2</span>
+<span class="co">#&gt; 80           5.7         2.6          3.5       2</span>
+<span class="co">#&gt; 81           5.5         2.4          3.8       2</span>
+<span class="co">#&gt; 82           5.5         2.4          3.7       2</span>
+<span class="co">#&gt; 83           5.8         2.7          3.9       2</span>
+<span class="co">#&gt; 84           6.0         2.7          5.1       2</span>
+<span class="co">#&gt; 85           5.4         3.0          4.5       2</span>
+<span class="co">#&gt; 86           6.0         3.4          4.5       2</span>
+<span class="co">#&gt; 87           6.7         3.1          4.7       1</span>
+<span class="co">#&gt; 88           6.3         2.3          4.4       2</span>
+<span class="co">#&gt; 89           5.6         3.0          4.1       2</span>
+<span class="co">#&gt; 90           5.5         2.5          4.0       2</span>
+<span class="co">#&gt; 91           5.5         2.6          4.4       2</span>
+<span class="co">#&gt; 92           6.1         3.0          4.6       2</span>
+<span class="co">#&gt; 93           5.8         2.6          4.0       2</span>
+<span class="co">#&gt; 94           5.0         2.3          3.3       2</span>
+<span class="co">#&gt; 95           5.6         2.7          4.2       2</span>
+<span class="co">#&gt; 96           5.7         3.0          4.2       2</span>
+<span class="co">#&gt; 97           5.7         2.9          4.2       2</span>
+<span class="co">#&gt; 98           6.2         2.9          4.3       2</span>
+<span class="co">#&gt; 99           5.1         2.5          3.0       2</span>
+<span class="co">#&gt; 100          5.7         2.8          4.1       2</span>
+<span class="co">#&gt; 101          6.3         3.3          6.0       1</span>
+<span class="co">#&gt; 102          5.8         2.7          5.1       2</span>
+<span class="co">#&gt; 103          7.1         3.0          5.9       1</span>
+<span class="co">#&gt; 104          6.3         2.9          5.6       1</span>
+<span class="co">#&gt; 105          6.5         3.0          5.8       1</span>
+<span class="co">#&gt; 106          7.6         3.0          6.6       1</span>
+<span class="co">#&gt; 107          4.9         2.5          4.5       2</span>
+<span class="co">#&gt; 108          7.3         2.9          6.3       1</span>
+<span class="co">#&gt; 109          6.7         2.5          5.8       1</span>
+<span class="co">#&gt; 110          7.2         3.6          6.1       1</span>
+<span class="co">#&gt; 111          6.5         3.2          5.1       1</span>
+<span class="co">#&gt; 112          6.4         2.7          5.3       1</span>
+<span class="co">#&gt; 113          6.8         3.0          5.5       1</span>
+<span class="co">#&gt; 114          5.7         2.5          5.0       2</span>
+<span class="co">#&gt; 115          5.8         2.8          5.1       2</span>
+<span class="co">#&gt; 116          6.4         3.2          5.3       1</span>
+<span class="co">#&gt; 117          6.5         3.0          5.5       1</span>
+<span class="co">#&gt; 118          7.7         3.8          6.7       1</span>
+<span class="co">#&gt; 119          7.7         2.6          6.9       1</span>
+<span class="co">#&gt; 120          6.0         2.2          5.0       2</span>
+<span class="co">#&gt; 121          6.9         3.2          5.7       1</span>
+<span class="co">#&gt; 122          5.6         2.8          4.9       2</span>
+<span class="co">#&gt; 123          7.7         2.8          6.7       1</span>
+<span class="co">#&gt; 124          6.3         2.7          4.9       2</span>
+<span class="co">#&gt; 125          6.7         3.3          5.7       1</span>
+<span class="co">#&gt; 126          7.2         3.2          6.0       1</span>
+<span class="co">#&gt; 127          6.2         2.8          4.8       2</span>
+<span class="co">#&gt; 128          6.1         3.0          4.9       2</span>
+<span class="co">#&gt; 129          6.4         2.8          5.6       1</span>
+<span class="co">#&gt; 130          7.2         3.0          5.8       1</span>
+<span class="co">#&gt; 131          7.4         2.8          6.1       1</span>
+<span class="co">#&gt; 132          7.9         3.8          6.4       1</span>
+<span class="co">#&gt; 133          6.4         2.8          5.6       1</span>
+<span class="co">#&gt; 134          6.3         2.8          5.1       1</span>
+<span class="co">#&gt; 135          6.1         2.6          5.6       1</span>
+<span class="co">#&gt; 136          7.7         3.0          6.1       1</span>
+<span class="co">#&gt; 137          6.3         3.4          5.6       1</span>
+<span class="co">#&gt; 138          6.4         3.1          5.5       1</span>
+<span class="co">#&gt; 139          6.0         3.0          4.8       2</span>
+<span class="co">#&gt; 140          6.9         3.1          5.4       1</span>
+<span class="co">#&gt; 141          6.7         3.1          5.6       1</span>
+<span class="co">#&gt; 142          6.9         3.1          5.1       1</span>
+<span class="co">#&gt; 143          5.8         2.7          5.1       2</span>
+<span class="co">#&gt; 144          6.8         3.2          5.9       1</span>
+<span class="co">#&gt; 145          6.7         3.3          5.7       1</span>
+<span class="co">#&gt; 146          6.7         3.0          5.2       1</span>
+<span class="co">#&gt; 147          6.3         2.5          5.0       2</span>
+<span class="co">#&gt; 148          6.5         3.0          5.2       1</span>
+<span class="co">#&gt; 149          6.2         3.4          5.4       1</span>
+<span class="co">#&gt; 150          5.9         3.0          5.1       2</span></code></pre></div>
+</div>
 </div>
 </div>
   </div>
