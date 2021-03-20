@@ -22,5 +22,9 @@ Adds two columns to the original data of the scikit learn's linear regression mo
 \examples{
 # Import libraries
 library(dplyr)
-# Load data
+library(sptidy)
+data("longley")
+my_lr <- lm(Employed~., data = longley)
+augment_lr(my_lr, (longley \%>\% select(!Employed)),
+ as.data.frame(longley$Employed))
 }

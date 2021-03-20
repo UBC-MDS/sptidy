@@ -7,7 +7,7 @@
 #' 4 columns describing coefficient estimates, standard
 #' error, t-statistics and p-values
 #'
-#' @param model lm_description
+#' @param model linear regression model lm()
 #'
 #' @return output data.frame
 #' @export
